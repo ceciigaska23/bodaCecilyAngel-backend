@@ -12,14 +12,14 @@ app.use(cors());
 
 // Define la ruta del proxy. Tu frontend llamará a esta ruta.
 app.get('/api/search', async (req, res) => {
+  // Obtiene el parámetro 'name' de la solicitud de tu frontend
   const { name } = req.query;
   
-  // URL de la API externa (la que te estaba dando el error 405)
-  // Reemplaza 'URL-DE-TU-API-EXTERNA' con la URL real
-  const externalApiUrl = `https://URL-DE-TU-API-EXTERNA/exec?action=search&name=${name}`;
+  // URL de la API de Google Apps Script (¡aquí es donde va tu URL!)
+  const externalApiUrl = `https://script.google.com/macros/s/AKfycbz1qWvbXP8eOGCQ3kJcF2dfKdfPjsKLzmn6rs7AHAceEMkNzlwLLyZCT3Z0W6dWhKWj/exec?action=search&name=${encodeURIComponent(name)}`;
   
   try {
-    // Hace la solicitud a la API externa desde tu servidor proxy
+    // Hace la solicitud a la API de Google Apps Script desde tu servidor proxy
     const response = await axios.get(externalApiUrl);
     
     // Envía los datos de vuelta al frontend
