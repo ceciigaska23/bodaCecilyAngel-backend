@@ -14,17 +14,19 @@ app.use(cors());
 // Esto es crucial para recibir los datos del formulario que vienen del frontend.
 app.use(express.json());
 
+ const externalApiUrl = `https://script.google.com/macros/s/AKfycbyai6TBy002q1Us80MDwf_xQFEq_GbssglL2cafcVpFukOTjudNbcAfn1liFccWu3j_/exec`;
+
 // Define la ruta del proxy para la BÚSQUEDA de invitados
 app.get('/api/search', async (req, res) => {
   // Obtiene el parámetro 'name' de la solicitud de tu frontend
   const { name } = req.query;
   
   // URL de la API de Google Apps Script (¡aquí es donde va tu URL!)
-  const externalApiUrl = `https://script.google.com/macros/s/AKfycbz1qWvbXP8eOGCQ3kJcF2dfKdfPjsKLzmn6rs7AHAceEMkNzlwLLyZCT3Z0W6dWhKWj/exec?action=search&name=${encodeURIComponent(name)}`;
+  const externalApiUrlv = `${externalApiUrl}?action=search&name=${encodeURIComponent(name)}`;
   
   try {
     // Hace la solicitud a la API de Google Apps Script desde tu servidor proxy
-    const response = await axios.get(externalApiUrl);
+    const response = await axios.get(externalApiUrlv);
     
     // Envía los datos de vuelta al frontend
     res.json(response.data);
