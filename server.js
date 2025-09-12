@@ -11,24 +11,22 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 
 // NUEVA LÍNEA: Middleware para analizar cuerpos de solicitud JSON.
-// Esto es crucial para recibir los datos del formulario que vienen del frontend.
 app.use(express.json());
 
- const externalApiUrl = `https://script.google.com/macros/s/AKfycbyai6TBy002q1Us80MDwf_xQFEq_GbssglL2cafcVpFukOTjudNbcAfn1liFccWu3j_/exec`;
+// === CÓDIGO CORREGIDO ===
+// Reemplaza esta URL con la que copiaste de tu despliegue de Apps Script
+const externalApiUrl = `https://script.google.com/macros/s/AKfycbxHAB-yFE1DLzwtDWneIE0fqYF3PysJlWvjwakSOTQuJihoOJOiNcGoTNrodJVLqF3C/exec`;
+// === FIN DEL CÓDIGO CORREGIDO ===
+
 
 // Define la ruta del proxy para la BÚSQUEDA de invitados
 app.get('/api/search', async (req, res) => {
-  // Obtiene el parámetro 'name' de la solicitud de tu frontend
   const { name } = req.query;
   
-  // URL de la API de Google Apps Script (¡aquí es donde va tu URL!)
   const externalApiUrlv = `${externalApiUrl}?action=search&name=${encodeURIComponent(name)}`;
   
   try {
-    // Hace la solicitud a la API de Google Apps Script desde tu servidor proxy
     const response = await axios.get(externalApiUrlv);
-    
-    // Envía los datos de vuelta al frontend
     res.json(response.data);
   } catch (error) {
     console.error('Error al hacer la solicitud a la API externa:', error.message);
@@ -38,28 +36,20 @@ app.get('/api/search', async (req, res) => {
 
 // NUEVA RUTA: Define el proxy para el ENVÍO del formulario
 app.post('/api/submit', async (req, res) => {
-  // URL de tu API de Google Apps Script
-  // const externalApiUrl = `https://script.google.com/macros/s/AKfycbyai6TBy002q1Us80MDwf_xQFEq_GbssglL2cafcVpFukOTjudNbcAfn1liFccWu3j_/exec`;
-
   try {
-    // Los datos del formulario ya están en req.body
-    // Hacemos una petición POST al Google Apps Script
     const response = await axios.post(externalApiUrl, req.body, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
-    // Reenvía la respuesta de Google Apps Script de vuelta al frontend
     res.json(response.data);
   } catch (error) {
-    console.error('Error al enviar la confirmación a la API externa:', error.message);
-    res.status(500).json({ error: 'Error al procesar la solicitud de envío' });
+    console.error('Error al enviar el formulario a la API externa:', error.message);
+    res.status(500).json({ error: 'Error al procesar la solicitud' });
   }
 });
 
-
 // Inicia el servidor
 app.listen(port, () => {
-  console.log(`Servidor proxy en ejecución en http://localhost:${port}`);
+  console.log(`Servidor escuchando en el puerto ${port}`);
 });
