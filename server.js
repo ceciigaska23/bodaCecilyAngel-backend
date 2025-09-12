@@ -37,7 +37,7 @@ app.get('/api/search', async (req, res) => {
 // NUEVA RUTA: Define el proxy para el ENVÍO del formulario
 app.post('/api/submit', async (req, res) => {
   // URL de tu API de Google Apps Script
-  const externalApiUrl = `https://script.google.com/macros/s/AKfycbxYzUmdMUs7iQrkoMvsIA-5htRPe9SyqudG5WTCleKcn5_cEo6kXpb9thVsmoDlpEYW/exec`;
+  const externalApiUrl = `https://script.google.com/macros/s/AKfycbyai6TBy002q1Us80MDwf_xQFEq_GbssglL2cafcVpFukOTjudNbcAfn1liFccWu3j_/exec`;
 
   try {
     // Los datos del formulario ya están en req.body
