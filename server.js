@@ -15,7 +15,7 @@ app.use(express.json());
 
 // === CÓDIGO CORREGIDO ===
 // Reemplaza esta URL con la que copiaste de tu despliegue de Apps Script
-const externalApiUrl = `https://script.google.com/macros/s/AKfycby5SSWFK7IS5Kd6nmteFMA2KhN_ilYM5XKF72mmPtdTfHL9cOqSE29a5GXJBsHSEnMU/exec`;
+const externalApiUrl = `https://script.google.com/macros/s/AKfycbxqFYgtCnbL9pasZA7fEfOgL2A8QTUMVncuYfPhT79EWQabFwg01z301ryLEV--NXCm/exec`;
 // === FIN DEL CÓDIGO CORREGIDO ===
 
 
