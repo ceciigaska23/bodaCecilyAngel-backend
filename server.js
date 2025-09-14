@@ -15,7 +15,7 @@ app.use(express.json());
 
 // === CÓDIGO CORREGIDO ===
 // Reemplaza esta URL con la que copiaste de tu despliegue de Apps Script
-const externalApiUrl = `https://script.google.com/macros/s/AKfycbxqFYgtCnbL9pasZA7fEfOgL2A8QTUMVncuYfPhT79EWQabFwg01z301ryLEV--NXCm/exec`;
+const externalApiUrl = `https://script.google.com/macros/s/AKfycbzcoHhPfKtSo1UNHZK4QhfhYBGjKsOOeEbBUmsIw2I8PElge-BGrDWWPBWLMQ3oPaiv/exec`;
 // === FIN DEL CÓDIGO CORREGIDO ===
 
 
@@ -52,4 +52,5 @@ app.post('/api/submit', async (req, res) => {
 // Inicia el servidor
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
+
 });
