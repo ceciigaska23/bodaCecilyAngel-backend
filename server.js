@@ -28,7 +28,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // ===== URL DE GOOGLE APPS SCRIPT - ACTUALÍZALA =====
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdk-YHHcQhMeRc3q1cpAhcjAAJv3p2gbJOIA8vgOFI4ar0z0m7g1GLtwX8o6RC_HtS/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBjRuvsvTR4j2gU9F-xAjo33xPRnPEhW_guehKCwJeHrNHe4u2AzO8JK5Noylba0RG/exec';
 
 // ===== RUTA DE SALUD PARA VERIFICAR QUE FUNCIONA =====
 app.get('/api/health', (req, res) => {
@@ -273,8 +273,8 @@ app.use((error, req, res, next) => {
   });
 });
 
-// ===== RUTA 404 =====
-app.use('*', (req, res) => {
+// ===== RUTA 404 - Corregida =====
+app.use((req, res) => {
   res.status(404).json({
     success: false,
     error: 'Ruta no encontrada',
