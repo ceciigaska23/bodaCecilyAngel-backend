@@ -28,7 +28,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // ===== URL DE GOOGLE APPS SCRIPT - ACTUALÍZALA =====
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuSkTPXU_3GyjYWT4kOGFg5OFJEdTB3h7tp3aj2xWsLhp_pKTstXpU90algmanuiHP/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2EorcHorqPLJdA4KZtVGImp9jYDzvnkP-m4kiB11VENwU6aTZovLVaN49EgsXj6KC/exec';
 
 // ===== RUTA DE SALUD PARA VERIFICAR QUE FUNCIONA =====
 app.get('/api/health', (req, res) => {
