@@ -351,6 +351,18 @@ app.use((req, res) => {
   });
 });
 
+// Añade esta ruta al inicio de tu archivo, después de los middlewares
+app.get('/', (req, res) => {
+  res.json({
+    message: '¡Bienvenido a la API de la boda de Ángel & Ceci!',
+    routes: {
+      health: '/api/health',
+      search: '/api/search?name=nombre',
+      submit: 'POST /api/submit'
+    }
+  });
+});
+
 // ===== INICIAR SERVIDOR =====
 app.listen(port, () => {
   console.log(`🚀 Servidor corriendo en puerto ${port}`);
