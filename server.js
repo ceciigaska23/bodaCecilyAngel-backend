@@ -150,7 +150,7 @@ app.post('/api/submit', async (req, res) => {
 
   try {
     // Validación de datos requeridos
-    const { id, name, attendance } = req.body;
+    const { id, name, attendance, phone  } = req.body;
     
     if (!id || !name || !attendance) {
       return res.status(400).json({
@@ -199,7 +199,21 @@ app.post('/api/submit', async (req, res) => {
 
     // Verificar que la respuesta indica éxito
     if (jsonData.success) {
-      console.log('✅ Confirmación guardada exitosamente');
+      const confirmationNumber = jsonData.confirmationNumber;
+
+      // Generar URL del QR
+      const qrUrl = `https://tu-dominio.com/validacion-qr?code=${confirmationNumber}`;
+      const whatsappText = `¡Hola ${name}!%0A%0A¡Tu asistencia a la boda ha sido confirmada! 🎉%0A%0ATe esperamos con mucho gusto. Aquí está el enlace a tu QR de confirmación: ${qrUrl}%0A%0A¡Nos vemos en la boda!`;
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${whatsappText}`;
+
+      return res.json({
+        success: true,
+        message: 'Confirmación guardada y QR generado',
+        confirmationNumber: confirmationNumber,
+        whatsappUrl: whatsappUrl // Envia la URL de WhatsApp al frontend
+      });
+      
+      // console.log('✅ Confirmación guardada exitosamente');
     } else {
       console.log('⚠️ Error en confirmación:', jsonData.message);
     }
