@@ -314,4 +314,60 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
+app.get('/api/validate-qr', async (req, res) => {
+  const confirmationCode = req.query.code;
+
+  if (!confirmationCode) {
+    return res.status(400).send('Error: Código de confirmación no proporcionado.');
+  }
+
+  try {
+    const scriptUrl = `${GOOGLE_SCRIPT_URL}?action=validate&code=${confirmationCode}`;
+    const response = await axios.get(scriptUrl, { timeout: 15000 });
+    const jsonData = response.data;
+
+    if (jsonData.success) {
+      // Logic to display a success message to the user
+      const guestName = jsonData.guestName || 'Invitado';
+      res.status(200).send(`
+        <html>
+          <head>
+            <title>Asistencia Confirmada</title>
+            <style>
+              body { font-family: sans-serif; text-align: center; padding: 50px; }
+              h1 { color: #4CAF50; }
+              p { color: #333; }
+            </style>
+          </head>
+          <body>
+            <h1>✅ ¡Asistencia Confirmada!</h1>
+            <p>¡Bienvenido, ${guestName}!</p>
+          </body>
+        </html>
+      `);
+    } else {
+      // Logic to display an error message
+      res.status(400).send(`
+        <html>
+          <head>
+            <title>Error</title>
+            <style>
+              body { font-family: sans-serif; text-align: center; padding: 50px; }
+              h1 { color: #f44336; }
+              p { color: #333; }
+            </style>
+          </head>
+          <body>
+            <h1>❌ Error</h1>
+            <p>${jsonData.message || 'Código inválido o ya utilizado.'}</p>
+          </body>
+        </html>
+      `);
+    }
+  } catch (error) {
+    console.error('Error al validar el QR:', error.message);
+    res.status(500).send('Error interno del servidor.');
+  }
+});
+
 module.exports = app;
