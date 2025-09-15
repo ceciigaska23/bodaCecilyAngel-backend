@@ -13,8 +13,7 @@ const corsOptions = {
     'http://localhost:3000',
     'http://localhost:5000',
     'http://127.0.0.1:5500',
-    'https://your-wedding-site.vercel.app', // Cambia por tu dominio real
-    'https://your-custom-domain.com' // Si tienes dominio personalizado
+    'https://boda-cecily-angel-backend.vercel.app',
   ],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With'],
@@ -355,14 +354,15 @@ app.use((req, res) => {
 app.get('/', (req, res) => {
   res.json({
     message: '¡Bienvenido a la API de la boda de Ángel & Ceci!',
+    status: 'Backend funcionando correctamente',
     routes: {
       health: '/api/health',
       search: '/api/search?name=nombre',
-      submit: 'POST /api/submit'
+      submit: 'POST /api/submit',
+      validateQR: '/api/validate-qr?code=codigo'
     }
   });
 });
-
 // ===== INICIAR SERVIDOR =====
 app.listen(port, () => {
   console.log(`🚀 Servidor corriendo en puerto ${port}`);
