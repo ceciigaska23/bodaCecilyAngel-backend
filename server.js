@@ -28,7 +28,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // ===== URL DE GOOGLE APPS SCRIPT - ACTUALÍZALA =====
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8ZRNpIcsMSSYGP2OB8gzFIzgBC5QTdCfAP0chfMcAVRbXT3fnilwXZL8JyQMm5T32/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_lkd55r8mGGbIVGnQC9VXNUbu2xXlEG3x3BcbOgpbXTd6HA3ZPByr9YuHbk3UGqFx/exec';
 
 // ===== RUTA DE SALUD PARA VERIFICAR QUE FUNCIONA =====
 app.get('/api/health', (req, res) => {
@@ -257,7 +257,7 @@ app.post('/api/submit', async (req, res) => {
       const confirmationNumber = jsonData.confirmationNumber;
 
       // Generar URL del QR
-      const qrUrl = `https://tu-dominio.com/validacion-qr?code=${confirmationNumber}`;
+      const qrUrl = `https://boda-cecily-angel.vercel.app/validacion-qr?code=${confirmationNumber}`;
       const whatsappText = `¡Hola ${name}!%0A%0A¡Tu asistencia a la boda ha sido confirmada! 🎉%0A%0ATe esperamos con mucho gusto. Aquí está el enlace a tu QR de confirmación: ${qrUrl}%0A%0A¡Nos vemos en la boda!`;
       const whatsappUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${whatsappText}`;
 
