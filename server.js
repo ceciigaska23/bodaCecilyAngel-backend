@@ -22,9 +22,35 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Manejar peticiones OPTIONS explícitamente
+app.options('*', cors(corsOptions));
+
+// Middleware adicional para CORS
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5000', 
+    'http://127.0.0.1:5500',
+    'https://boda-cecily-angel-backend.vercel.app',
+    'https://cecigaska23.github.io'
+  ];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  
+  next();
+});
+
 // Middleware para parsear JSON
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
 
 // ===== URL DE GOOGLE APPS SCRIPT - ACTUALÍZALA =====
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_lkd55r8mGGbIVGnQC9VXNUbu2xXlEG3x3BcbOgpbXTd6HA3ZPByr9YuHbk3UGqFx/exec';
