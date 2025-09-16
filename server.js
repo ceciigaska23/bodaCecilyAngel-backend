@@ -1,9 +1,8 @@
-// ===== SERVER.JS CORREGIDO PARA VERCEL =====
+// ===== SERVER.JS CORREGIDO =====
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 
-// Crear instancia de Express
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -14,38 +13,15 @@ const corsOptions = {
     'http://localhost:5000',
     'http://127.0.0.1:5500',
     'https://boda-cecily-angel-backend.vercel.app',
+    'https://cecigaska23.github.io'
   ],
-  methods: ['GET', 'POST', 'OPTIONS'],
+  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With'],
   credentials: true
 };
 
-app.use(cors(corsOptions));
-
-// Manejar peticiones OPTIONS explícitamente
-app.options('*', cors(corsOptions));
-
-// Middleware adicional para CORS
-app.use((req, res, next) => {
-  const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:5000', 
-    'http://127.0.0.1:5500',
-    'https://boda-cecily-angel-backend.vercel.app',
-    'https://cecigaska23.github.io'
-  ];
-  
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  
-  next();
-});
+// Esta línea es suficiente para manejar CORS y peticiones OPTIONS
+app.use(cors(corsOptions)); 
 
 // Middleware para parsear JSON
 app.use(express.json({ limit: '10mb' }));
