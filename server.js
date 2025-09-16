@@ -13,7 +13,7 @@ const corsOptions = {
     'http://localhost:5000',
     'http://127.0.0.1:5500',
     'https://boda-cecily-angel-backend.vercel.app',
-    'https://cecigaska23.github.io'
+    'https://ceciigaska23.github.io' // ⚠️  AÑADE ESTA LÍNEA
   ],
   methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With'],
@@ -340,15 +340,6 @@ app.use((error, req, res, next) => {
     success: false,
     error: 'Error interno del servidor',
     details: process.env.NODE_ENV === 'development' ? error.message : 'Error interno'
-  });
-});
-
-// ===== RUTA 404 - Corregida =====
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    error: 'Ruta no encontrada',
-    path: req.originalUrl
   });
 });
 
