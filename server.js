@@ -29,7 +29,31 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 
 // ===== URL DE GOOGLE APPS SCRIPT - ACTUALÍZALA =====
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_lkd55r8mGGbIVGnQC9VXNUbu2xXlEG3x3BcbOgpbXTd6HA3ZPByr9YuHbk3UGqFx/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzcvepLcEBFWBHkigL46BjdUcL2dGjJHo8Y4Uc0fx2GqbS8VwanyCstl5GzQcA8RYa/exec';
+
+// ===== RUTAS DE LA API =====
+// Ruta de validación de código QR (nueva y corregida)
+app.post('/validate-code', async (req, res) => {
+    const { code } = req.body;
+    console.log(`Solicitud de validación para el código: ${code}`);
+
+    // TODO: Reemplaza esta lógica con tu conexión a la base de datos o Google Script
+    // Este es solo un ejemplo para que el frontend funcione
+    const validCodes = ['1234', '5678', '9012'];
+    const isValid = validCodes.includes(code);
+
+    if (isValid) {
+        res.status(200).json({
+            isValid: true,
+            message: 'Código validado con éxito'
+        });
+    } else {
+        res.status(400).json({
+            isValid: false,
+            message: 'Código incorrecto. Por favor, verifica e inténtalo de nuevo.'
+        });
+    }
+});
 
 // ===== RUTA DE SALUD PARA VERIFICAR QUE FUNCIONA =====
 app.get('/api/health', (req, res) => {
@@ -142,61 +166,6 @@ app.get('/api/search', async (req, res) => {
       error: 'Error interno del servidor',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
-  }
-});
-
-// ===== NUEVA RUTA: VALIDACIÓN DE CÓDIGO QR =====
-app.get('/api/validate-qr', async (req, res) => {
-  const confirmationCode = req.query.code;
-
-  if (!confirmationCode) {
-    return res.status(400).send('Error: Código de confirmación no proporcionado.');
-  }
-
-  try {
-    const scriptUrl = `${GOOGLE_SCRIPT_URL}?action=validate&code=${confirmationCode}`;
-    const response = await axios.get(scriptUrl, { timeout: 15000 });
-    const jsonData = response.data;
-
-    if (jsonData.success) {
-      const guestName = jsonData.guestName || 'Invitado';
-      res.status(200).send(`
-        <html>
-          <head>
-            <title>Asistencia Confirmada</title>
-            <style>
-              body { font-family: sans-serif; text-align: center; padding: 50px; }
-              h1 { color: #4CAF50; }
-              p { color: #333; }
-            </style>
-          </head>
-          <body>
-            <h1>✅ ¡Asistencia Confirmada!</h1>
-            <p>¡Bienvenido, ${guestName}!</p>
-          </body>
-        </html>
-      `);
-    } else {
-      res.status(400).send(`
-        <html>
-          <head>
-            <title>Error</title>
-            <style>
-              body { font-family: sans-serif; text-align: center; padding: 50px; }
-              h1 { color: #f44336; }
-              p { color: #333; }
-            </style>
-          </head>
-          <body>
-            <h1>❌ Error</h1>
-            <p>${jsonData.message || 'Código inválido o ya utilizado.'}</p>
-          </body>
-        </html>
-      `);
-    }
-  } catch (error) {
-    console.error('Error al validar el QR:', error.message);
-    res.status(500).send('Error interno del servidor.');
   }
 });
 
@@ -356,6 +325,7 @@ app.get('/', (req, res) => {
     }
   });
 });
+
 // ===== INICIAR SERVIDOR =====
 app.listen(port, () => {
   console.log(`🚀 Servidor corriendo en puerto ${port}`);
