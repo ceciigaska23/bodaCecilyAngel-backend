@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 
 // ===== URL DE GOOGLE APPS SCRIPT - ACTUALÍZALA =====
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyuJ71uQjCozF5egw6MK-2Tekb_jbijMwsdC5nuGn0itwfMQA2GE8_vvEE0UfJx4naR/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQ59EIiipog-OZIS5lUxzhVMjotFIToiyCZnSnoVhM0nQaJ4DhG-FaNOHBrJee52QH/exec';
 
 // ===== RUTAS DE LA API =====
 // Ruta de validación de código QR (nueva y corregida)
