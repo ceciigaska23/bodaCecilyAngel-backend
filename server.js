@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 
 // ===== URL DE GOOGLE APPS SCRIPT - ACTUALÍZALA =====
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzcvepLcEBFWBHkigL46BjdUcL2dGjJHo8Y4Uc0fx2GqbS8VwanyCstl5GzQcA8RYa/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwjRUQlQIo7pM8At6TCGLoL8nAZ0_NZFt0czhm3PjRZhvTMivn1CfEteJMAtpN28n3u/exec';
 
 // ===== RUTAS DE LA API =====
 // Ruta de validación de código QR (nueva y corregida)
@@ -39,7 +39,6 @@ app.post('/validate-code', async (req, res) => {
 
     // TODO: Reemplaza esta lógica con tu conexión a la base de datos o Google Script
     // Este es solo un ejemplo para que el frontend funcione
-    const validCodes = ['1234', '5678', '9012'];
     const isValid = validCodes.includes(code);
 
     if (isValid) {
