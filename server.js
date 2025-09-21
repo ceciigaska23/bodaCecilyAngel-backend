@@ -256,9 +256,7 @@ app.post("/api/submit", async (req, res) => {
   console.log("📝 Confirmación recibida:", req.body);
 
   try {
-    // Validación de datos requeridos
     const { id, name, attendance, phone } = req.body;
-
     if (!id || !name || !attendance) {
       return res.status(400).json({
         success: false,
@@ -267,10 +265,8 @@ app.post("/api/submit", async (req, res) => {
     }
 
     console.log("📡 Enviando confirmación a Google Script...");
-
-    // Configuración de axios para POST
     const axiosConfig = {
-      timeout: 20000, // 20 segundos para envíos
+      timeout: 20000,
       headers: {
         "Content-Type": "application/json",
         "User-Agent": "Wedding-App/1.0",
@@ -288,7 +284,6 @@ app.post("/api/submit", async (req, res) => {
       data: response.data,
     });
 
-    // Parsear respuesta si es string
     let jsonData;
     if (typeof response.data === "string") {
       try {
@@ -304,19 +299,19 @@ app.post("/api/submit", async (req, res) => {
       jsonData = response.data;
     }
 
-    // Verificar que la respuesta indica éxito
     if (jsonData.success) {
       const confirmationNumber = jsonData.confirmationNumber;
 
-      // 1. URL de validación
+      // 1. URL de validación que irá dentro del QR
       const validationUrl = `https://boda-cecily-angel.vercel.app/validacion-qr?code=${confirmationNumber}`;
 
-      // 2. QR dinámico con Google Chart API
-      const qrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(
-        validationUrl
-      )}`;
+      // 2. URL del QR que llama a TU PROPIA RUTA
+      // ❌ REMUEVE ESTA LÍNEA INCORRECTA
+      // const qrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(validationUrl)}`;
+      // ✅ USA ESTA LÍNEA CORRECTA
+      const qrUrl = `${req.protocol}://${req.get('host')}/qr-code/${confirmationNumber}`;
 
-      // 3. Texto para WhatsApp con QR incluido
+      // 3. Texto para WhatsApp
       const whatsappText = encodeURIComponent(
         `🎉 ¡Hola ${name}!\n\n` +
           `¡Tu asistencia a nuestra boda ha sido confirmada!\n\n` +
@@ -324,7 +319,7 @@ app.post("/api/submit", async (req, res) => {
           `🕕 Hora: 4:00 PM\n` +
           `📍 Lugar: Lienzo Charro "La Tapatía"\n\n` +
           `🎫 Código de confirmación: ${confirmationNumber}\n\n` +
-          `📲 Presenta este QR el día de la boda:\n${qrUrl}\n\n` +
+          `📲 Presenta este QR el día de la boda:\n${validationUrl}\n\n` +
           `Si deseas notificar un cambio en tu asistencia, escribe aquí:\nhttps://wa.me/5215640042829\n\n` +
           `¡Nos vemos en la celebración!\n` +
           `💕 Ángel & Ceci`
@@ -339,14 +334,11 @@ app.post("/api/submit", async (req, res) => {
         message: "Confirmación guardada y QR generado",
         confirmationNumber: confirmationNumber,
         whatsappUrl: whatsappUrl,
-        qrUrl: qrUrl, // <-- NUEVO: devolvemos también el QR por si quieres mostrarlo en tu UI
+        qrUrl: qrUrl,
       });
-
-      // console.log('✅ Confirmación guardada exitosamente');
     } else {
       console.log("⚠️ Error en confirmación:", jsonData.message);
     }
-
     res.json(jsonData);
   } catch (error) {
     console.error("❌ Error enviando confirmación:", {
@@ -355,7 +347,6 @@ app.post("/api/submit", async (req, res) => {
       response: error.response?.data,
       status: error.response?.status,
     });
-
     // Manejar errores específicos
     if (error.code === "ETIMEDOUT") {
       return res.status(504).json({
@@ -363,7 +354,6 @@ app.post("/api/submit", async (req, res) => {
         error: "Timeout - la confirmación tardó demasiado en procesarse",
       });
     }
-
     if (error.response?.status >= 400) {
       return res.status(error.response.status).json({
         success: false,
@@ -371,14 +361,30 @@ app.post("/api/submit", async (req, res) => {
         details: error.response.data,
       });
     }
-
     res.status(500).json({
       success: false,
       error: "Error interno del servidor",
-      details:
-        process.env.NODE_ENV === "development" ? error.message : undefined,
+      details: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
+});
+
+// AÑADE ESTA NUEVA RUTA PARA GENERAR EL QR
+app.get('/qr-code/:code', async (req, res) => {
+    try {
+        const { code } = req.params;
+        const validationUrl = `https://boda-cecily-angel.vercel.app/validacion-qr/?code=${code}`;
+        const qrImage = await QRCode.toBuffer(validationUrl, { type: 'png', width: 300 });
+
+        res.writeHead(200, {
+            'Content-Type': 'image/png',
+            'Content-Length': qrImage.length
+        });
+        res.end(qrImage);
+    } catch (error) {
+        console.error('Error generando QR:', error);
+        res.status(500).json({ error: 'No se pudo generar el QR' });
+    }
 });
 
 // ===== RUTA DE TESTING PARA GOOGLE SCRIPT =====
