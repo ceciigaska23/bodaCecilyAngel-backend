@@ -303,7 +303,7 @@ app.post("/api/submit", async (req, res) => {
       const confirmationNumber = jsonData.confirmationNumber;
 
       // 1. URL de validación que irá dentro del QR
-      const validationUrl = `${req.protocol}://${req.get('host')}/validacion-qr?code=${confirmationNumber}`;
+      const validationUrl = `https://boda-cecily-angel.vercel.app/validacion-qr?code=${confirmationNumber}`;
 
       // 2. URL del QR que llama a TU PROPIA RUTA
       // ❌ REMUEVE ESTA LÍNEA INCORRECTA
