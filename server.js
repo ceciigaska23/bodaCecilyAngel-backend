@@ -233,23 +233,36 @@ app.get("/api/search", async (req, res) => {
   }
 });
 
-// ===== RUTA PARA VALIDAR Y MOSTRAR QR =====
-app.get('/validacion-qr/:id', async (req, res) => {
+// AÑADE ESTA RUTA DE VALIDACIÓN.
+app.post('/api/validate', async (req, res) => {
     try {
-        const { id } = req.params;
-        const qrData = `https://boda-cecily-angel.vercel.app/validacion-qr/?code=${id}`;
-        const qrImage = await QRCode.toBuffer(qrData, { type: 'png', width: 300 });
+        const { code } = req.body;
+        if (!code) {
+            return res.status(400).json({ success: false, message: 'Falta el código de validación.' });
+        }
 
-        res.writeHead(200, {
-            'Content-Type': 'image/png',
-            'Content-Length': qrImage.length
+        // Llama a tu Google Apps Script con la acción 'validate'
+        const response = await axios.post(GOOGLE_SCRIPT_URL, {
+            action: 'validate',
+            code: code
         });
-        res.end(qrImage);
+
+        // Asegúrate de que la respuesta del Apps Script sea JSON
+        let jsonData = typeof response.data === "string" ? JSON.parse(response.data) : response.data;
+        
+        // Reenvía la respuesta del Apps Script al frontend
+        res.json(jsonData);
+
     } catch (error) {
-        console.error('Error generando QR:', error);
-        res.status(500).json({ error: 'No se pudo generar el QR' });
+        console.error('❌ Error en validación de código:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error interno del servidor al validar el código.',
+            details: error.message
+        });
     }
 });
+
 
 // ===== RUTA PARA ENVÍO DE FORMULARIO =====
 app.post("/api/submit", async (req, res) => {
@@ -369,7 +382,6 @@ app.post("/api/submit", async (req, res) => {
   }
 });
 
-// AÑADE ESTA NUEVA RUTA PARA GENERAR EL QR
 // ===== RUTA PARA LA IMAGEN DEL QR =====
 app.get('/qr-code/:code', async (req, res) => {
     try {
