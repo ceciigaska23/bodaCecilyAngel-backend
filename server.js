@@ -319,7 +319,7 @@ app.post("/api/submit", async (req, res) => {
           `🕕 Hora: 4:00 PM\n` +
           `📍 Lugar: Lienzo Charro "La Tapatía"\n\n` +
           `🎫 Código de confirmación: ${confirmationNumber}\n\n` +
-          `📲 Presenta este QR el día de la boda:\n${validationUrl}\n\n` +
+          `📲 Presenta este QR el día de la boda:\n${qrUrl}\n\n` +
           `Si deseas notificar un cambio en tu asistencia, escribe aquí:\nhttps://wa.me/5215640042829\n\n` +
           `¡Nos vemos en la celebración!\n` +
           `💕 Ángel & Ceci`
@@ -370,6 +370,7 @@ app.post("/api/submit", async (req, res) => {
 });
 
 // AÑADE ESTA NUEVA RUTA PARA GENERAR EL QR
+// ===== RUTA PARA LA IMAGEN DEL QR =====
 app.get('/qr-code/:code', async (req, res) => {
     try {
         const { code } = req.params;
