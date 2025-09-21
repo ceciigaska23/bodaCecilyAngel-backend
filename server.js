@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
+const QRCode = require('qrcode');
 
 const app = express();
 const port = process.env.PORT || 3000;
