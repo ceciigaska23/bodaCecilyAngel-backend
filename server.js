@@ -315,9 +315,6 @@ app.post("/api/submit", async (req, res) => {
     if (jsonData.success) {
       const confirmationNumber = jsonData.confirmationNumber;
 
-      // 1. URL de validación que irá dentro del QR
-      const validationUrl = `https://boda-cecily-angel.vercel.app/validacion-qr?code=${confirmationNumber}`;
-
       // 2. URL del QR que llama a TU PROPIA RUTA
       // ❌ REMUEVE ESTA LÍNEA INCORRECTA
       // const qrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(validationUrl)}`;
