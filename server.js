@@ -309,7 +309,7 @@ app.post("/api/submit", async (req, res) => {
       // ❌ REMUEVE ESTA LÍNEA INCORRECTA
       // const qrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(validationUrl)}`;
       // ✅ USA ESTA LÍNEA CORRECTA
-      const qrUrl = `${req.protocol}://${req.get('host')}/qr-code/${confirmationNumber}`;
+      const qrUrl = `https://boda-cecily-angel-backend.vercel.app/qr-code/${confirmationNumber}`;
 
       // 3. Texto para WhatsApp
       const whatsappText = encodeURIComponent(
