@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 
 // ===== URL DE GOOGLE APPS SCRIPT - ACTUALÍZALA =====
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzpcWB2sM73U_LL3yPs4909UEURXbuCnGCmGpM5j9mbW_JjS7HMeEH2aNV-oQMwhfLZ/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzM2MUu8GnLJlgg9OOhTI3RbQCuhmBunuO4nNtTH6fUrfIxBWwjYFjJvs2nxZUxy3rj/exec';
 
 // ===== RUTAS DE LA API =====
 // Ruta de validación de código QR (nueva y corregida)
@@ -222,43 +222,13 @@ app.post('/api/submit', async (req, res) => {
     }
 
     // Verificar que la respuesta indica éxito
-    // if (jsonData.success) {
-    //   const confirmationNumber = jsonData.confirmationNumber;
-
-    //   // Generar URL del QR
-    //   const qrUrl = `https://boda-cecily-angel.vercel.app/validacion-qr?code=${confirmationNumber}`;
-    //   const whatsappText = `¡Hola ${name}!%0A%0A¡Tu asistencia a la boda ha sido confirmada! 🎉%0A%0ATe esperamos con mucho gusto. Aquí está el enlace a tu QR de confirmación: ${qrUrl}%0A%0A¡Nos vemos en la boda!`;
-    //   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${whatsappText}`;
-
-    //   return res.json({
-    //     success: true,
-    //     message: 'Confirmación guardada y QR generado',
-    //     confirmationNumber: confirmationNumber,
-    //     whatsappUrl: whatsappUrl // Envia la URL de WhatsApp al frontend
-    //   });
-      
-    //   // console.log('✅ Confirmación guardada exitosamente');
-    // } else {
-    //   console.log('⚠️ Error en confirmación:', jsonData.message);
-    // }
-
-    // Verificar que la respuesta indica éxito
-    // Verificar que la respuesta indica éxito
     if (jsonData.success) {
       const confirmationNumber = jsonData.confirmationNumber;
-      const guestPhone = formData.phone;
 
-      // Generar URL del QR
-      const qrUrl = `https://ceciigaska23.github.io/boda-cecily-angel/?validate=${confirmationNumber}`;
-      
-      // Generar mensaje de WhatsApp con el QR
-      let whatsappUrl = null;
-      if (guestPhone && guestPhone.length >= 10) {
-        // Limpiar el número de teléfono
-        const cleanPhone = guestPhone.replace(/[^0-9]/g, '');
-        const formattedPhone = cleanPhone.startsWith('52') ? cleanPhone : '52' + cleanPhone;
-        
-        const whatsappText = encodeURIComponent(
+    //   // Generar URL del QR
+      // const qrUrl = `https://boda-cecily-angel.vercel.app/validacion-qr?code=${confirmationNumber}`;
+    //   const whatsappText = `¡Hola ${name}!%0A%0A¡Tu asistencia a la boda ha sido confirmada! 🎉%0A%0ATe esperamos con mucho gusto. Aquí está el enlace a tu QR de confirmación: ${qrUrl}%0A%0A¡Nos vemos en la boda!`;
+    const whatsappText = encodeURIComponent(
           `🎉 ¡Hola ${formData.name}!\n\n` +
           `¡Tu asistencia a nuestra boda ha sido confirmada!\n\n` +
           `📅 Fecha: 30 de Octubre 2026\n` +
@@ -269,21 +239,20 @@ app.post('/api/submit', async (req, res) => {
           `¡Nos vemos en la celebración!\n` +
           `💕 Ángel & Ceci`
         );
-        
-        whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${whatsappText}`;
-      }
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${whatsappText}`;
 
       return res.json({
         success: true,
         message: 'Confirmación guardada y QR generado',
         confirmationNumber: confirmationNumber,
-        whatsappUrl: whatsappUrl,
-        qrUrl: qrUrl
+        whatsappUrl: whatsappUrl // Envia la URL de WhatsApp al frontend
       });
       
+      // console.log('✅ Confirmación guardada exitosamente');
     } else {
       console.log('⚠️ Error en confirmación:', jsonData.message);
     }
+
 
     res.json(jsonData);
 
