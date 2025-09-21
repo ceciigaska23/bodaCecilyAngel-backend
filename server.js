@@ -233,23 +233,22 @@ app.get("/api/search", async (req, res) => {
   }
 });
 
-// Ruta para validar y mostrar QR
+// ===== RUTA PARA VALIDAR Y MOSTRAR QR =====
 app.get('/validacion-qr/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    // Genera el QR que apunte a la validación del invitado
-    const qrData = `${req.protocol}://${req.get('host')}/validacion-qr/${id}`;
-    const qrImage = await QRCode.toBuffer(qrData, { type: 'png', width: 300 });
+    try {
+        const { id } = req.params;
+        const qrData = `https://boda-cecily-angel.vercel.app/validacion-qr/?code=${id}`;
+        const qrImage = await QRCode.toBuffer(qrData, { type: 'png', width: 300 });
 
-    res.writeHead(200, {
-      'Content-Type': 'image/png',
-      'Content-Length': qrImage.length
-    });
-    res.end(qrImage);
-  } catch (error) {
-    console.error('Error generando QR:', error);
-    res.status(500).json({ error: 'No se pudo generar el QR' });
-  }
+        res.writeHead(200, {
+            'Content-Type': 'image/png',
+            'Content-Length': qrImage.length
+        });
+        res.end(qrImage);
+    } catch (error) {
+        console.error('Error generando QR:', error);
+        res.status(500).json({ error: 'No se pudo generar el QR' });
+    }
 });
 
 // ===== RUTA PARA ENVÍO DE FORMULARIO =====
