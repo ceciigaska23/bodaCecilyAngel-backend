@@ -332,7 +332,7 @@ app.post("/api/submit", async (req, res) => {
           `📲 Presenta este QR el día de la boda:\n${qrUrl}\n\n` +
           `Si deseas notificar un cambio en tu asistencia, escribe aquí:\nhttps://wa.me/5215640042829\n\n` +
           `¡Nos vemos en la celebración!\n` +
-          `💕 Ángel & Ceci`
+          `💕 Cecilia & Ángel`
       );
 
       // 4. Link de envío por WhatsApp
@@ -436,7 +436,7 @@ app.use((error, req, res, next) => {
 // Añade esta ruta al inicio de tu archivo, después de los middlewares
 app.get("/", (req, res) => {
   res.json({
-    message: "¡Bienvenido a la API de la boda de Ángel & Ceci!",
+    message: "¡Bienvenido a la API de la boda de Cecilia & Ángel!",
     status: "Backend funcionando correctamente",
     routes: {
       health: "/api/health",
